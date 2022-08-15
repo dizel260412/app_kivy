@@ -5,6 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from itertools import chain
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.clock import Clock
 
 
 class ScreenMain(Screen):
@@ -23,14 +24,15 @@ class ScreenMain(Screen):
         self.manager.current = 'secondscreen'
         return instance.text
 
-    text_buttom = button_press
-
 
 class SecondScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.text = ScreenMain.button_press  # Передаю переменную из button_press
+
         layout = GridLayout(cols=5, rows=5, padding=[35], spacing=10)
-        layout.add_widget(Button(text=f'{ScreenMain.text_buttom}', on_press=self._on_press_button_new_layout))
+        layout.add_widget(Button(text=str(self.text), on_press=self._on_press_button_new_layout))
         # for i in range(1, 26):
         #     layout.add_widget(
         #         Button(
@@ -58,6 +60,29 @@ class ThirdScreen(Screen):
     def _on_press_button_layout(self, *args):
         self.manager.transition.direction = 'left'
         self.manager.current = 'main_screen'
+        # self.form = Form()
+        # self.form.start()
+        # return self.form
+
+
+# class Cell(Widget):
+#     def __init__(self, x, y, size):
+#         super().__init__()
+#         self.size = (size, size)
+#         self.pos = (x, y)
+#
+#
+# class Form(Widget):
+#     def __init__(self):
+#         super().__init__()
+#         self.cell = Cell(100, 100, 30)
+#         self.add_widget(self.cell)
+#
+#     def start(self):
+#         Clock.schedule_interval(self.update, 0.01)
+#
+#     def update(self, _):
+#         self.cell.pos = (self.cell.pos[0] + 2, self.cell.pos[1] + 3)
 
 
 class MyApp(App):
