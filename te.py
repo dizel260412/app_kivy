@@ -30,7 +30,7 @@ class SecondScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = GridLayout(cols=5, rows=5, padding=[35], spacing=10)
-        layout.add_widget(Button(text=f'{ScreenMain.text_buttom}'))
+        layout.add_widget(Button(text=f'{ScreenMain.text_buttom}', on_press=self._on_press_button_new_layout))
         # for i in range(1, 26):
         #     layout.add_widget(
         #         Button(
@@ -43,7 +43,20 @@ class SecondScreen(Screen):
         self.add_widget(layout)
 
     def _on_press_button_new_layout(self, *args):
-        self.manager.transition.direction = 'right'
+        self.manager.transition.direction = 'left'
+        self.manager.current = 'thirdscreen'
+
+
+class ThirdScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        layout = GridLayout(cols=5, rows=5, padding=[35], spacing=10)
+        layout.add_widget(Button(text='Hello', on_press=self._on_press_button_layout))
+        self.add_widget(layout)
+
+    def _on_press_button_layout(self, *args):
+        self.manager.transition.direction = 'left'
         self.manager.current = 'main_screen'
 
 
@@ -52,6 +65,7 @@ class MyApp(App):
         sm = ScreenManager()
         sm.add_widget(ScreenMain(name='main_screen'))
         sm.add_widget(SecondScreen(name='secondscreen'))
+        sm.add_widget(ThirdScreen(name='thirdscreen'))
 
         return sm
 
